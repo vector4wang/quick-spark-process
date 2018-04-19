@@ -20,10 +20,11 @@ import java.util.List;
  */
 public class WordCount {
     public static void main(String[] args) {
-        SparkConf conf = new SparkConf().setMaster("local").setAppName("WordCount");
+//        SparkConf conf = new SparkConf().setMaster("local").setAppName("WordCount");
+        SparkConf conf = new SparkConf().setAppName("WordCount");
         JavaSparkContext context = new JavaSparkContext(conf);
 
-        JavaRDD<String> javaRDD = context.textFile("D:\\develop\\gitspace\\quick-spark-process\\word-count\\src\\main\\resources\\blsmy.txt");
+        JavaRDD<String> javaRDD = context.textFile("/mnt/data/blsmy.txt");
         JavaRDD<String> strings = javaRDD.flatMap(new FlatMapFunction<String, String>() {
             @Override
             public Iterable<String> call(String line) throws Exception {
@@ -53,21 +54,18 @@ public class WordCount {
         });
 
 
-        List<Tuple2<String, Integer>> top = integerStringJavaPairRDD.sortByKey(false).mapToPair(new PairFunction<Tuple2<Integer, String>, String, Integer>() {
+        JavaPairRDD<String, Integer> mapToPair = integerStringJavaPairRDD.sortByKey(false).mapToPair(new PairFunction<Tuple2<Integer, String>, String, Integer>() {
             @Override
             public Tuple2<String, Integer> call(Tuple2<Integer, String> tuple) throws Exception {
                 return new Tuple2<>(tuple._2, tuple._1);
             }
-        }).top(10, new Comparator<Tuple2<String, Integer>>() {
-            @Override
-            public int compare(Tuple2<String, Integer> o1, Tuple2<String, Integer> o2) {
-                return o1._2 - o2._2;
-            }
         });
 
-        for (Tuple2<String, Integer> tuple : top) {
-            System.out.println(tuple._1 + ": " + tuple._2);
-        }
-
+        mapToPair.foreach(new VoidFunction<Tuple2<String, Integer>>() {
+            @Override
+            public void call(Tuple2<String, Integer> tuple) throws Exception {
+                System.out.println(tuple._1 + ": " + tuple._2);
+            }
+        });
     }
 }
