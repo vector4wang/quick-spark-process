@@ -9,6 +9,8 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>word-count</module>
+        <module>spark-pi</module>
+        <module>spark-sql</module>
     </modules>
     <packaging>pom</packaging>
 
