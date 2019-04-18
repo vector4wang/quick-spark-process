@@ -1,6 +1,9 @@
 # quick-spark-process
 学习spark的相关示例
 
+[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
+
+
 ### word-count
 最简单也是最经典的例子
 后面搭了spark集群 并使用了hdfs来存储文件，有几点需要注意
