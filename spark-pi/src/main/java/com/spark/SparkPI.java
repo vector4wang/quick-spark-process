@@ -18,8 +18,8 @@ import java.util.List;
  */
 public class SparkPI {
     public static void main(String[] args) {
-//        SparkConf conf = new SparkConf().setMaster("local").setAppName("Spark PI");
-        SparkConf conf = new SparkConf().setAppName("Spark PI");
+        SparkConf conf = new SparkConf().setMaster("local").setAppName("Spark PI");
+//        SparkConf conf = new SparkConf().setAppName("Spark PI");
         JavaSparkContext jsc = new JavaSparkContext(conf);
 
         int slices = (args.length == 1) ? Integer.parseInt(args[0]) : 2;

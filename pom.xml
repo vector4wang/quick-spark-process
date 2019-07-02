@@ -11,6 +11,7 @@
         <module>word-count</module>
         <module>spark-pi</module>
         <module>spark-sql</module>
+        <module>sb-word-count</module>
     </modules>
     <packaging>pom</packaging>
 
