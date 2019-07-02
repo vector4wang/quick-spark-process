@@ -54,12 +54,7 @@ public class JavaSparkSql {
         dataFrame.groupBy("age").count().show();
 
 
-        JavaRDD<People> map = jsc.textFile(filePath).map(new Function<String, People>() {
-            @Override
-            public People call(String line) throws Exception {
-                return JSON.parseObject(line, People.class);
-            }
-        });
+        JavaRDD<People> map = jsc.textFile(filePath).map((Function<String, People>) line -> JSON.parseObject(line, People.class));
 
         DataFrame peopleDF = sqlContext.createDataFrame(map, People.class);
         peopleDF.registerTempTable("people");
@@ -97,12 +92,7 @@ public class JavaSparkSql {
 
         DataFrame teenagers2 = sqlContext.sql("select name from parquetFile where age > 13 and age <= 19");
 
-        List<String> collect = teenagers2.toJavaRDD().map(new Function<Row, String>() {
-            @Override
-            public String call(Row row) throws Exception {
-                return "Name: " + row.getString(0);
-            }
-        }).collect();
+        List<String> collect = teenagers2.toJavaRDD().map((Function<Row, String>) row -> "Name: " + row.getString(0)).collect();
 
         for (String name : collect) {
             System.out.println(name);

@@ -32,19 +32,11 @@ public class SparkPI {
         }
 
         JavaRDD<Integer> dataSet = jsc.parallelize(integers);
-        Integer count = dataSet.map(new Function<Integer, Integer>() {
-            @Override
-            public Integer call(Integer integer) throws Exception {
-                double x = Math.random() * 2 - 1;
-                double y = Math.random() * 2 - 1;
-                return (x * x + y * y < 1) ? 1 : 0;
-            }
-        }).reduce(new Function2<Integer, Integer, Integer>() {
-            @Override
-            public Integer call(Integer integer, Integer integer2) throws Exception {
-                return integer + integer2;
-            }
-        });
+        Integer count = dataSet.map((Function<Integer, Integer>) integer -> {
+            double x = Math.random() * 2 - 1;
+            double y = Math.random() * 2 - 1;
+            return (x * x + y * y < 1) ? 1 : 0;
+        }).reduce((Function2<Integer, Integer, Integer>) (integer, integer2) -> integer + integer2);
 
         System.out.println("Pi is roughly " + 4.0 * count / n);
 
