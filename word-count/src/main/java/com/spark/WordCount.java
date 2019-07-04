@@ -26,6 +26,7 @@ public class WordCount {
 
 //        SparkConf conf = new SparkConf().setMaster("local").setAppName("WordCount");
         SparkConf conf = new SparkConf()
+                .setMaster("local")
                 .setAppName("WordCount")
                 .set("spark.cores.max", "1")
                 .set("spark.eventLog.enabled", "true");
@@ -34,10 +35,10 @@ public class WordCount {
             System.out.println(stringStringTuple2._1 + ": " + stringStringTuple2._2);
         }
         JavaSparkContext context = new JavaSparkContext(conf);
-
-//        JavaRDD<String> javaRDD = context.textFile("D:\\data\\spark\\blsmy.txt");  -- 用于idea测试
+        // 用于idea测试
+        JavaRDD<String> javaRDD = context.textFile("D:\\data\\spark\\blsmy.txt");
 //        JavaRDD<String> javaRDD = context.textFile("file:///mnt/data/blsmy.txt"); -- 用于集群运行(前提，运行的各节点都需要有此文件)
-        JavaRDD<String> javaRDD = context.textFile("hdfs://spark-master:9000/wordcount/blsmy.txt");
+//        JavaRDD<String> javaRDD = context.textFile("hdfs://spark-master:9000/wordcount/blsmy.txt");
         JavaRDD<String> strings = javaRDD.flatMap((FlatMapFunction<String, String>) line -> Arrays.asList(line.split(" ")));
 
         JavaPairRDD<String, Integer> pairs = strings.mapToPair((PairFunction<String, String, Integer>) s -> new Tuple2<>(s, 1));
