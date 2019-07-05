@@ -1,5 +1,7 @@
 package com.spark.entity;
 
+import java.io.Serializable;
+
 /**
  * Created with IDEA
  * User: vector
@@ -7,7 +9,7 @@ package com.spark.entity;
  * Time: 11:14
  * Description:
  */
-public class People {
+public class People implements Serializable {
     private String name;
     private int age;
 

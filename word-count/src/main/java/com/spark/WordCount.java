@@ -11,6 +11,7 @@ import org.apache.spark.api.java.function.VoidFunction;
 import scala.Tuple2;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @Author: wangxc
@@ -24,7 +25,6 @@ import java.util.Arrays;
 public class WordCount {
     public static void main(String[] args) {
 
-//        SparkConf conf = new SparkConf().setMaster("local").setAppName("WordCount");
         SparkConf conf = new SparkConf()
                 .setMaster("local")
                 .setAppName("WordCount")
@@ -36,12 +36,20 @@ public class WordCount {
         }
         JavaSparkContext context = new JavaSparkContext(conf);
         // 用于idea测试
-        JavaRDD<String> javaRDD = context.textFile("D:\\data\\spark\\blsmy.txt");
+		String classFilePath = WordCount.class.getResource("/blsmy.txt").getPath();
+
+		JavaRDD<String> javaRDD = context.textFile(classFilePath);
 //        JavaRDD<String> javaRDD = context.textFile("file:///mnt/data/blsmy.txt"); -- 用于集群运行(前提，运行的各节点都需要有此文件)
 //        JavaRDD<String> javaRDD = context.textFile("hdfs://spark-master:9000/wordcount/blsmy.txt");
-        JavaRDD<String> strings = javaRDD.flatMap((FlatMapFunction<String, String>) line -> Arrays.asList(line.split(" ")));
 
-        JavaPairRDD<String, Integer> pairs = strings.mapToPair((PairFunction<String, String, Integer>) s -> new Tuple2<>(s, 1));
+//
+		JavaRDD<String> words = javaRDD.flatMap((FlatMapFunction<String, String>) s -> {
+			String[] split = s.split(" ");
+			List<String> strings = Arrays.asList(split);
+			return strings.iterator();
+		});
+
+        JavaPairRDD<String, Integer> pairs = words.mapToPair((PairFunction<String, String, Integer>) s -> new Tuple2<>(s, 1));
 
         JavaPairRDD<String, Integer> reduceByKey = pairs.reduceByKey((Function2<Integer, Integer, Integer>) (integer, integer2) -> integer + integer2);
 
