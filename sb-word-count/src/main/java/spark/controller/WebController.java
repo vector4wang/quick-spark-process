@@ -39,13 +39,13 @@ public class WebController {
             return new BaseResp<>(ResultStatus.error_record_not_found);
         }
 
-        return new BaseResp<Map<String, Integer>>(ResultStatus.SUCCESS,counts);
+        return new BaseResp<>(ResultStatus.SUCCESS,counts);
     }
 
     
 
     @RequestMapping("/hello")
     public BaseResp<String> pring(){
-        return new BaseResp<String>(ResultStatus.SUCCESS,"hihi");
+        return new BaseResp<>(ResultStatus.SUCCESS,"hihi");
     }
 }
