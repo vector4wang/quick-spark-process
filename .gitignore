@@ -40,3 +40,5 @@ nbdist/
 ### log
 logs/
 log/
+
+*.parquet/
