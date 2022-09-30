@@ -19,7 +19,7 @@
 
     <properties>
         <spark.core.version>2.12</spark.core.version>
-        <scala.version>2.13.0</scala.version>
+        <scala.version>2.13.9</scala.version>
         <spark.version>2.4.0</spark.version>
     </properties>
 
